@@ -39,7 +39,7 @@ app.get('/api/brands', async (req, res) => {
     });
 
 app.use(cors({
-    origin: 'https://gsm-arena-mongodb-johnrosey.vercel.app/'
+    origin: 'http://localhost:4200'
 
   }));
   

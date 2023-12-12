@@ -11,10 +11,10 @@ export class DeviceSearchService {
 
   searchDevices(brand: string, ram: string, year: string) {
     // Replace with your actual backend URL
-    const url = 'https://servergsmarenamongodb.vercel.app/api/search';
+    const url = 'http://localhost:3000/api/search';
     return this.http.get<Device[]>(url, { params: { brand, ram, year } });  }
-
+    
     getBrandOptions(): Observable<string[]> {
-       return this.http.get<string[]>(`https://servergsmarenamongodb.vercel.app/api/brands`);
+       return this.http.get<string[]>(`http://localhost:3000/api/brands`);
     }
 }

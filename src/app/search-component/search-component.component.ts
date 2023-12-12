@@ -21,23 +21,22 @@ itemsPerPage = 32; // Nombre d'éléments par page
   brandOptions: string[] = [];
 constructor(private deviceSearchService: DeviceSearchService) {}
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+    this.updateBrandOptions();  }
 // Method to handle search
 search() {
-  // Logic to perform search, likely making a call to a backend service
-  console.log(`Searching for Brand: ${this.brand}, RAM: ${this.internal_memory}, Year: ${this.year}`);
-  this.deviceSearchService.searchDevices(this.brand, this.internal_memory, this.year)
+  let memoryValue = this.internal_memory ? `${this.internal_memory} GB` : '';
+console.log(`Searching for devices with brand ${this.brand}, memory ${memoryValue} and year ${this.year}`);
+  this.deviceSearchService.searchDevices(this.brand, memoryValue, this.year)
     .subscribe(data => {
       this.devices = data.filter(device =>
         (!this.brand || device.brand === this.brand) &&
-        (!this.internal_memory || device.internal_memory === this.internal_memory) &&
-        (!this.year || device.announced === this.year)
+        (!memoryValue || device.internal_memory === memoryValue) &&
+        (!this.year || device.announced && device.announced.includes(this.year))
       ) as Device[];
       this.onDevicesUpdated();
     });
-
 }
+
 calculateTotalPages(): number {
   return Math.ceil(this.devices.length / this.itemsPerPage);
 }
@@ -61,7 +60,12 @@ changePage(pageNumber: number) {
     this.updatePagination();
   }
   updateBrandOptions() {
-   this.deviceSearchService.getBrandOptions().subscribe(data => this.brandOptions = data);
+    this.deviceSearchService.getBrandOptions()
+      .subscribe(options => {
+        this.brandOptions = options;
+      }, error => {
+        console.error('Erreur lors du chargement des options de marque', error);
+      });
   }
   calculatePages() {
     const totalPages = Math.ceil(this.devices.length / this.itemsPerPage);
