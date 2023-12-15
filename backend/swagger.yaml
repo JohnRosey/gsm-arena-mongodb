@@ -1,0 +1,29 @@
+swagger: '2.0'
+info:
+  title: GSM Arena API
+  version: '1.0'
+host: 'localhost:3000'
+basePath: '/'
+schemes:
+- 'http'
+paths:
+  /phones:
+    get:
+      summary: Liste tous les téléphones
+      responses:
+        200:
+          description: Une liste de téléphones
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Phone'
+definitions:
+  Phone:
+    type: object
+    properties:
+      brand:
+        type: string
+      ram:
+        type: integer
+      year:
+        type: integer
