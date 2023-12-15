@@ -6,12 +6,13 @@ import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 export const registerUser = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username, password,email } = req.body;
 
     try {
         // Check if user already exists
         const existingUser = await findUser(username);
-        if (existingUser) {
+        const existingEmail = await findUser(email);
+        if (existingUser || existingEmail) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
@@ -20,10 +21,10 @@ export const registerUser = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create the user
-        const newUser = await createUser(username, hashedPassword);
+        const newUser = await createUser(username, hashedPassword,email);
 
         // Generate JWT token
-        const token = jwt.sign({ id: newUser.insertedId }, JWT_SECRET);
+        const token = jwt.sign({ id: newUser.id }, JWT_SECRET);
 
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
@@ -49,7 +50,10 @@ export const loginUser = async (req: Request, res: Response) => {
     // Check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+      //return res.status(400).json({ message: 'Invalid credentials' });
+      //afficher le message d'erreur correspondant à l'erreur  exacte
+     return console.log(res.locals.message);
+
     }
 
     // Generate JWT token

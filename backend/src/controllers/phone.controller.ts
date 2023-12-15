@@ -1,25 +1,23 @@
 import { Request, Response } from 'express';
-import { getPhones } from '../models/phone.model';
+import { getPhoneCollection } from '../models/db';
 
-export const getAllPhones = async (req: Request, res: Response) => {
-  try {
-    const phones = await getPhones();
-    res.json(phones);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-};
-import { searchPhones } from '../models/phone.model';
-
-export const findPhones = async (req: Request, res: Response) => {
-    const { brand, ram, year } = req.query;
+export const getAllPhones = async (req, res) => {
     try {
-        const phones = await searchPhones(brand?.toString() || '', parseInt(ram?.toString() || '0'), parseInt(year?.toString() || '0'));
+        const collection = getPhoneCollection();
+        const phones = await collection.find().toArray();
         res.json(phones);
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).send(error.message);
     }
 };
-
-// Ajoutez d'autres méthodes pour gérer les différentes requêtes
+export const findPhones = async (req, res) => {
+  try {
+      const { brand, ram, year } = req.query;
+      const collection = getPhoneCollection();
+      const query = {};
+      const phones = await collection.find(query).toArray();
+      res.json(phones);
+  } catch (error) {
+      res.status(500).send(error.message);
+  }
+};

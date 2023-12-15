@@ -18,20 +18,21 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     try {
         // Check if user already exists
         const existingUser = yield (0, user_model_1.findUser)(username);
-        if (existingUser) {
+        const existingEmail = yield (0, user_model_1.findUser)(email);
+        if (existingUser || existingEmail) {
             return res.status(400).json({ message: 'User already exists' });
         }
         // Hash the password
         const salt = yield bcryptjs_1.default.genSalt(10);
         const hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         // Create the user
-        const newUser = yield (0, user_model_1.createUser)(username, hashedPassword);
+        const newUser = yield (0, user_model_1.createUser)(username, hashedPassword, email);
         // Generate JWT token
-        const token = jsonwebtoken_1.default.sign({ id: newUser.insertedId }, JWT_SECRET);
+        const token = jsonwebtoken_1.default.sign({ id: newUser.id }, JWT_SECRET);
         res.status(201).json({ message: 'User registered successfully', token });
     }
     catch (error) {
@@ -52,7 +53,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Check if password is correct
         const isPasswordCorrect = yield bcryptjs_1.default.compare(password, existingUser.password);
         if (!isPasswordCorrect) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            //return res.status(400).json({ message: 'Invalid credentials' });
+            //afficher le message d'erreur correspondant à l'erreur  exacte
+            return console.log(res.locals.message);
         }
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ id: existingUser.id }, JWT_SECRET);

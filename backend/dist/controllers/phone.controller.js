@@ -10,29 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findPhones = exports.getAllPhones = void 0;
-const phone_model_1 = require("../models/phone.model");
+const db_1 = require("../models/db");
 const getAllPhones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const phones = yield (0, phone_model_1.getPhones)();
+        const collection = (0, db_1.getPhoneCollection)();
+        const phones = yield collection.find().toArray();
         res.json(phones);
     }
     catch (error) {
-        console.error(error.message);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).send(error.message);
     }
 });
 exports.getAllPhones = getAllPhones;
-const phone_model_2 = require("../models/phone.model");
 const findPhones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { brand, ram, year } = req.query;
     try {
-        const phones = yield (0, phone_model_2.searchPhones)((brand === null || brand === void 0 ? void 0 : brand.toString()) || '', parseInt((ram === null || ram === void 0 ? void 0 : ram.toString()) || '0'), parseInt((year === null || year === void 0 ? void 0 : year.toString()) || '0'));
+        const { brand, ram, year } = req.query;
+        const collection = (0, db_1.getPhoneCollection)();
+        const query = {};
+        const phones = yield collection.find(query).toArray();
         res.json(phones);
     }
     catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).send(error.message);
     }
 });
 exports.findPhones = findPhones;
-// Ajoutez d'autres méthodes pour gérer les différentes requêtes
 //# sourceMappingURL=phone.controller.js.map

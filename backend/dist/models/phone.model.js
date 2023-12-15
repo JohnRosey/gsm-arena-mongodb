@@ -8,27 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchPhones = exports.getPhones = exports.connectDB = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
 const mongodb_1 = require("mongodb");
+dotenv_1.default.config();
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.DATABASE_NAME;
 const collectionName = process.env.COLLECTION_NAME;
-let dbClient;
 let phoneCollection;
-require('dotenv').config();
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const client = new mongodb_1.MongoClient(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        const client = new mongodb_1.MongoClient(uri);
         yield client.connect();
         const db = client.db(dbName);
         phoneCollection = db.collection(collectionName);
+        console.log("Database connected successfully");
     }
     catch (error) {
-        console.error(error.message);
+        console.error("Database connection failed:", error.message);
+        throw error; // Relancer l'erreur pour la gestion externe
     }
 });
 exports.connectDB = connectDB;
@@ -36,10 +38,11 @@ const getPhones = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!phoneCollection) {
         throw new Error("Database not connected or collection not set");
     }
-    const result = yield phoneCollection.find().toArray();
-    return result;
+    return yield phoneCollection.find().toArray();
 });
 exports.getPhones = getPhones;
+// Votre code pour searchPhones et l'interface Device...
+// Assurez-vous que connectDB est appelée avant d'utiliser les autres fonctions exportées
 const searchPhones = (brand, ram, year) => __awaiter(void 0, void 0, void 0, function* () {
     const query = {};
     if (brand)
@@ -51,5 +54,4 @@ const searchPhones = (brand, ram, year) => __awaiter(void 0, void 0, void 0, fun
     return yield phoneCollection.find(query).toArray();
 });
 exports.searchPhones = searchPhones;
-// Ajoutez d'autres fonctions pour gérer la collection (CRUD)
 //# sourceMappingURL=phone.model.js.map
