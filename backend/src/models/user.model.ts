@@ -31,6 +31,14 @@ export const findUser = async (username: string) => {
   return await User.findOne({ username });
 };
 
-// Ajoutez d'autres fonctions pour la gestion de profil
-export const  updateUser = async (username: string, password: string) => {
-}
+// update user profile (email, password)
+export const updateUserProfile = async (userId: string, updateData: { email?: string; password?: string; }) => {
+    if (updateData.password) {
+        updateData.password = await bcrypt.hash(updateData.password, 10);
+    }
+    return User.findByIdAndUpdate(userId, updateData, { new: true });
+};
+// get user profile (email, password) 
+export const getUserProfile = async (userId: string) => {
+    return User.findById(userId);
+};

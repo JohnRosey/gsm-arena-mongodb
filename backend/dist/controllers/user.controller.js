@@ -27,10 +27,10 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(400).json({ message: 'User already exists' });
         }
         // Hash the password
-        const salt = yield bcryptjs_1.default.genSalt(10);
-        const hashedPassword = yield bcryptjs_1.default.hash(password, salt);
+        //const salt = await bcrypt.genSalt(10);
+        //const hashedPassword = await bcrypt.hash(password, salt);
         // Create the user
-        const newUser = yield (0, user_model_1.createUser)(username, hashedPassword, email);
+        const newUser = yield (0, user_model_1.createUser)(username, password, email);
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ id: newUser.id }, JWT_SECRET);
         res.status(201).json({ message: 'User registered successfully', token });
@@ -53,9 +53,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         // Check if password is correct
         const isPasswordCorrect = yield bcryptjs_1.default.compare(password, existingUser.password);
         if (!isPasswordCorrect) {
-            //return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(400).json({ message: 'Invalid credentials' });
             //afficher le message d'erreur correspondant à l'erreur  exacte
-            return console.log(res.locals.message);
+            //return console.log(res.locals.message);
         }
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ id: existingUser.id }, JWT_SECRET);

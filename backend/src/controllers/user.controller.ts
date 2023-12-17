@@ -16,12 +16,8 @@ export const registerUser = async (req: Request, res: Response) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash the password
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
-
         // Create the user
-        const newUser = await createUser(username, hashedPassword,email);
+        const newUser = await createUser(username, password,email);
 
         // Generate JWT token
         const token = jwt.sign({ id: newUser.id }, JWT_SECRET);
@@ -32,6 +28,35 @@ export const registerUser = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+// ... autres imports et configurations ...
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+      const user = await findUser(req.params.userId);
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+      res.status(200).json(user);
+  } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const updateUserProfile = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const updatedUser = await updateUserProfile(email, password);
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+// ... autres fonctions existantes ...
 
 
 
@@ -50,9 +75,9 @@ export const loginUser = async (req: Request, res: Response) => {
     // Check if password is correct
     const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
     if (!isPasswordCorrect) {
-      //return res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid credentials' });
       //afficher le message d'erreur correspondant à l'erreur  exacte
-     return console.log(res.locals.message);
+     //return console.log(res.locals.message);
 
     }
 

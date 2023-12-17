@@ -1,3 +1,7 @@
+/**
+ * Ce fichier contient les fonctions directement liées à l'interaction avec la base de données
+ * 
+ */
 import dotenv from 'dotenv';
 import { MongoClient, Collection } from 'mongodb';
 dotenv.config();
@@ -40,3 +44,14 @@ export const searchPhones = async (brand: string, ram: number, year: number) => 
   
     return await phoneCollection.find(query).toArray();
   }
+  export const getPhoneById = async (phoneId: string) => {
+    // Logique pour obtenir un téléphone par son ID
+};
+
+export const addCommentToPhone = async (phoneId: string, comment: { userId: string; comment: string; date: Date; }) => {
+    // Logique pour ajouter un commentaire à un téléphone
+};
+
+export const addToUserCart = async (userId: string, phoneId: string) => {
+    // Logique pour ajouter un téléphone au panier d'un utilisateur
+};
