@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addToCart = exports.addPhoneComment = exports.getPhoneDetails = exports.findPhones = exports.getAllPhones = void 0;
+exports.addToCart = exports.addPhoneComment = exports.getPhoneDetails = exports.findPhones = exports.getBrandOptions = exports.getAllPhones = void 0;
 const db_1 = require("../models/db");
 const phone_model_1 = require("../models/phone.model");
 const mongodb_1 = require("mongodb");
@@ -24,6 +24,17 @@ const getAllPhones = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllPhones = getAllPhones;
+const getBrandOptions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const collection = (0, db_1.getPhoneCollection)();
+        const brands = yield collection.distinct('brand');
+        res.json(brands);
+    }
+    catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+exports.getBrandOptions = getBrandOptions;
 const findPhones = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { brand, ram, year } = req.query;

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Search</title>
+    
+    <style>
+        /* Additional styles if needed */
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-4">
+            <div class="text-lg font-semibold">Device Search</div>
+            <button class="py-2 px-4 bg-gray-200 rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">Login</button>
+        </div>
+        <div class="flex gap-4 mb-4">
+            <select class="flex-1 p-2 border border-gray-300 rounded" [(ngModel)]="brand">
+              <option value="">Choisir une marque</option>
+              <option *ngFor="let option of brandOptions" [value]="option">{{ option }}</option>
+            </select>
+            <input type="text" placeholder="Memoire" class="flex-1 p-2 border border-gray-300 rounded" [(ngModel)]="internal_memory">
+            <input type="text" placeholder="annee" class="flex-1 p-2 border border-gray-300 rounded" [(ngModel)]="year">
+          </div>
+          
+        <div class="flex justify-center mb-8">
+            <button class="py-2 px-6 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400" (click)="searchDevice()">chercher</button>
+        </div>
+        <!-- Conteneur de la grille -->
+
+    </div>
+</body>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+    <div *ngFor="let device of paginatedDevices" class="card w-96 bg-base-100 shadow-xl">
+      <figure><img src="{{device.img_url}}" alt="{{device.model}}" /></figure>
+      <div class="card-body">
+        <h2 class="card-title">{{device.brand}} - {{device.model}}</h2>
+        <p>Network Technology: {{device.network_technology}}</p>
+        <p>Announced: {{device.announced}}</p>
+        <p>Status: {{device.status}}</p>
+        <div class="card-actions justify-end">
+          <button class="btn btn-primary">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</html>

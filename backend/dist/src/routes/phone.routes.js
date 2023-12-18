@@ -47,6 +47,7 @@ const initPhoneRoutes = () => __awaiter(void 0, void 0, void 0, function* () {
         exports.phoneRoutes.get('/phones/search', phone_controller_1.findPhones);
         exports.phoneRoutes.get('/phones', phone_controller_1.getAllPhones);
         exports.phoneRoutes.get('/phones/find', phone_controller_1.findPhones);
+        exports.phoneRoutes.get('/brands', phone_controller_1.getBrandOptions);
         exports.phoneRoutes.get('/:phoneId', phone_controller_1.getPhoneDetails);
         exports.phoneRoutes.post('/:phoneId/comment', middleware_1.isAuthenticated, phone_controller_1.addPhoneComment);
         exports.phoneRoutes.post('/addToCart', middleware_1.isAuthenticated, phone_controller_1.addToCart);
