@@ -19,6 +19,7 @@ itemsPerPage = 32; // Nombre d'éléments par page
   devices: Device[] = []; // Utilisez l'interface ici
   brandOptions: string[] = [];
   paginatedDevices: Device[] = []; // Et ici aussicurrentPage = 1;
+  isloading = false;
   constructor(private service: ServiceService) { }
 
   ngOnInit(): void {
@@ -26,14 +27,15 @@ itemsPerPage = 32; // Nombre d'éléments par page
 
   searchDevice() {
     let memoryValue = this.internal_memory ? `${this.internal_memory} GB` : '';
-
+    this.isloading=true
     this.service.searchDevice(this.brand, this.internal_memory, this.year).subscribe((data: any) => {
       this.devices = data.filter((device: Device) =>
         (!this.brand || device.brand === this.brand) &&
         (!memoryValue || device.internal_memory === memoryValue) &&
         (!this.year || device.announced && device.announced.includes(this.year))
       ) as Device[];
-      this.onDevicesUpdated();
+      
+      this.onDevicesUpdated();this.isloading=false
     });
   }
   updatePagination() {

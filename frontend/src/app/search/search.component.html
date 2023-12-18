@@ -27,11 +27,15 @@
         <div class="flex justify-center mb-8">
             <button class="py-2 px-6 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400" (click)="searchDevice()">chercher</button>
         </div>
+        <!-- Barre de chargement -->
+        <div class="flex justify-center" *ngIf="isloading">
+            <div class="loader"></div>
+        </div>
         <!-- Conteneur de la grille -->
 
     </div>
 </body>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<div *ngIf="!isloading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <div *ngFor="let device of paginatedDevices" class="card w-96 bg-base-100 shadow-xl">
       <figure><img src="{{device.img_url}}" alt="{{device.model}}" /></figure>
       <div class="card-body">
