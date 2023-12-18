@@ -37,18 +37,24 @@ exports.initPhoneRoutes = exports.phoneRoutes = void 0;
 const express_1 = require("express");
 const phone_controller_1 = require("../controllers/phone.controller");
 const db = __importStar(require("../models/db"));
+const middleware_1 = require("../../middleware/middleware");
 exports.phoneRoutes = (0, express_1.Router)();
 // Fonction pour initialiser les routes
 const initPhoneRoutes = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield db.connectDB();
         exports.phoneRoutes.get('/', phone_controller_1.getAllPhones);
-        exports.phoneRoutes.get('/search', phone_controller_1.findPhones);
+        exports.phoneRoutes.get('/phones/search', phone_controller_1.findPhones);
+        exports.phoneRoutes.get('/phones', phone_controller_1.getAllPhones);
+        exports.phoneRoutes.get('/phones/find', phone_controller_1.findPhones);
+        exports.phoneRoutes.get('/:phoneId', phone_controller_1.getPhoneDetails);
+        exports.phoneRoutes.post('/:phoneId/comment', middleware_1.isAuthenticated, phone_controller_1.addPhoneComment);
+        exports.phoneRoutes.post('/addToCart', middleware_1.isAuthenticated, phone_controller_1.addToCart);
         // Ajoutez d'autres routes si nécessaire
-        console.log("Phone routes initialized.");
+        console.log('Phone routes initialized.');
     }
     catch (error) {
-        console.error("Failed to initialize phone routes:", error.message);
+        console.error('Failed to initialize phone routes:', error.message);
         throw error;
     }
 });

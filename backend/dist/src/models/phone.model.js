@@ -12,9 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchPhones = exports.getPhones = exports.connectDB = void 0;
+exports.addToUserCart = exports.addCommentToPhone = exports.getPhoneById = exports.searchPhones = exports.getPhones = exports.connectDB = void 0;
+/**
+ * Ce fichier contient les fonctions directement liées à l'interaction avec la base de données
+ *
+ */
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongodb_1 = require("mongodb");
+const comment_model_1 = __importDefault(require("./comment.model"));
 dotenv_1.default.config();
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.DATABASE_NAME;
@@ -26,17 +31,17 @@ const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
         yield client.connect();
         const db = client.db(dbName);
         phoneCollection = db.collection(collectionName);
-        console.log("Database connected successfully");
+        console.log('Database connected successfully');
     }
     catch (error) {
-        console.error("Database connection failed:", error.message);
+        console.error('Database connection failed:', error.message);
         throw error; // Relancer l'erreur pour la gestion externe
     }
 });
 exports.connectDB = connectDB;
 const getPhones = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!phoneCollection) {
-        throw new Error("Database not connected or collection not set");
+        throw new Error('Database not connected or collection not set');
     }
     return yield phoneCollection.find().toArray();
 });
@@ -54,4 +59,23 @@ const searchPhones = (brand, ram, year) => __awaiter(void 0, void 0, void 0, fun
     return yield phoneCollection.find(query).toArray();
 });
 exports.searchPhones = searchPhones;
+const getPhoneById = (phoneId) => __awaiter(void 0, void 0, void 0, function* () {
+    // Logique pour obtenir un téléphone par son ID
+});
+exports.getPhoneById = getPhoneById;
+const addCommentToPhone = (phoneId, commentData) => __awaiter(void 0, void 0, void 0, function* () {
+    const newComment = new comment_model_1.default({
+        phoneId,
+        userId: commentData.userId,
+        comment: commentData.comment,
+        date: commentData.date
+    });
+    yield newComment.save();
+    return newComment;
+});
+exports.addCommentToPhone = addCommentToPhone;
+const addToUserCart = (userId, phoneId) => __awaiter(void 0, void 0, void 0, function* () {
+    // Logique pour ajouter un téléphone au panier d'un utilisateur
+});
+exports.addToUserCart = addToUserCart;
 //# sourceMappingURL=phone.model.js.map

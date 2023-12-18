@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.registerUser = void 0;
+exports.loginUser = exports.updateUserProfile = exports.getUserProfile = exports.registerUser = void 0;
 const user_model_1 = require("../models/user.model");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -26,9 +26,6 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (existingUser || existingEmail) {
             return res.status(400).json({ message: 'User already exists' });
         }
-        // Hash the password
-        //const salt = await bcrypt.genSalt(10);
-        //const hashedPassword = await bcrypt.hash(password, salt);
         // Create the user
         const newUser = yield (0, user_model_1.createUser)(username, password, email);
         // Generate JWT token
@@ -41,6 +38,35 @@ const registerUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.registerUser = registerUser;
+// ... autres imports et configurations ...
+const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield (0, user_model_1.findUser)(req.params.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+exports.getUserProfile = getUserProfile;
+const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    try {
+        const updatedUser = yield (0, exports.updateUserProfile)(email, password);
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User updated successfully', user: updatedUser });
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+exports.updateUserProfile = updateUserProfile;
+// ... autres fonctions existantes ...
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
     // Implémentez la logique de connexion
@@ -54,8 +80,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const isPasswordCorrect = yield bcryptjs_1.default.compare(password, existingUser.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: 'Invalid credentials' });
-            //afficher le message d'erreur correspondant à l'erreur  exacte
-            //return console.log(res.locals.message);
+            // afficher le message d'erreur correspondant à l'erreur  exacte
+            // return console.log(res.locals.message);
         }
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ id: existingUser.id }, JWT_SECRET);

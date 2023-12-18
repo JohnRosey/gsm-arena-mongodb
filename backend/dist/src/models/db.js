@@ -27,8 +27,9 @@ const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     yield client.connect();
     const db = client.db(dbName);
     phoneCollection = db.collection(collectionName);
-    console.log("Database connected successfully");
+    console.log('Database connected successfully!!!!');
     userCollection = db.collection('users');
+    console.log(phoneCollection.collectionName.toString());
     return phoneCollection;
 });
 exports.connectDB = connectDB;
@@ -36,12 +37,14 @@ const getUserCollection = () => {
     if (!userCollection) {
         throw new Error('Database not initialized');
     }
-    return userCollection;
+    else {
+        return userCollection;
+    }
 };
 exports.getUserCollection = getUserCollection;
 const getPhoneCollection = () => {
     if (!phoneCollection) {
-        throw new Error("Database not connected or collection not set");
+        throw new Error('Database not connected or collection not set');
     }
     return phoneCollection;
 };
