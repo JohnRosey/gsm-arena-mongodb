@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
+register() {
+throw new Error('Method not implemented.');
+}
+newUser: any;
 
 }

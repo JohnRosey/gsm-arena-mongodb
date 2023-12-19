@@ -1,1 +1,25 @@
-<p>login works!</p>
+<div class="container mx-auto p-4">
+    <div class="card w-96 bg-base-100 shadow-xl mx-auto">
+      <div class="card-body">
+        <h2 class="card-title">Connexion</h2>
+        <form (submit)="login()">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input type="email" placeholder="email" class="input input-bordered" [(ngModel)]="user.email">
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Mot de passe</span>
+            </label>
+            <input type="password" placeholder="mot de passe" class="input input-bordered" [(ngModel)]="user.password">
+          </div>
+          <div class="form-control mt-6">
+            <button class="btn btn-primary">Se connecter</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

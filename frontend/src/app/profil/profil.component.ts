@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./profil.component.css']
 })
 export class ProfilComponent {
+updateProfile() {
+throw new Error('Method not implemented.');
+}
+user: any;
 
 }
