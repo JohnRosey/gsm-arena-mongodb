@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Device } from '../model/Device';
 import { ServiceService } from '../service.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -8,9 +9,7 @@ import { ServiceService } from '../service.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit{
-search() {
-throw new Error('Method not implemented.');
-}
+
 itemsPerPage = 32; // Nombre d'éléments par page
   currentPage = 1; // Page actuelle
   brand: string = '';
@@ -20,11 +19,17 @@ itemsPerPage = 32; // Nombre d'éléments par page
   brandOptions: string[] = [];
   paginatedDevices: Device[] = []; // Et ici aussicurrentPage = 1;
   isloading = false;
-  constructor(private service: ServiceService) { }
+  constructor(private service: ServiceService,private router:Router) { }
 
   ngOnInit(): void {
-    this.updateBrandOptions();  }
+    this.updateBrandOptions();
 
+   }
+  
+
+   openDeviceDetails(phoneId: string) {
+    this.router.navigate(['/device-details', phoneId]);
+  }
   searchDevice() {
     let memoryValue = this.internal_memory ? `${this.internal_memory} GB` : '';
     this.isloading=true
@@ -56,4 +61,6 @@ itemsPerPage = 32; // Nombre d'éléments par page
         console.error('Erreur lors du chargement des options de marque', error);
       });
   }
-}
+}  
+
+

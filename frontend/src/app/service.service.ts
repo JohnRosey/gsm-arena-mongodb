@@ -8,6 +8,9 @@ const urlApi='http://localhost:3000/api/' // Replace 'your_api_endpoint' with th
   providedIn: 'root'
 })
 export class ServiceService {
+  getPhoneDetails(phoneId: string| null ) {
+    return this.http.get(`${this.urlApi}phones/${phoneId}`);
+  }
   private urlApi = urlApi;
 
   constructor(private http: HttpClient) {

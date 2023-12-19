@@ -1,0 +1,43 @@
+<body>
+    <div class="container mx-auto p-4">
+      <h1 class="text-2xl font-bold mb-4">Details de l'Appareil</h1>
+      
+      <!-- Condition pour vérifier si les données de l'appareil sont chargées -->
+      <div *ngIf="device">
+        <div class="card bg-white shadow-xl">
+            <figure><img src="{{device.img_url}}" alt="{{device.model}}" /></figure>
+            <div class="p-4">
+            <h2 class="text-xl font-semibold">{{ device.brand }} - {{ device.model }}</h2>
+            <p><strong>Technologie du Réseau :</strong> {{ device.network_technology }}</p>
+            <p><strong>Annoncé :</strong> {{ device.announced }}</p>
+            <p><strong>Status :</strong> {{ device.status }}</p>
+            <!-- Autres détails de l'appareil -->
+          </div>
+        </div>
+  
+        <!-- Section des commentaires -->
+        <div class="my-6">
+          <h3 class="text-lg font-semibold mb-3">Commentaires</h3>
+          <div *ngFor="let comment of device.comments">
+            <div class="p-2 border-t border-gray-200">
+              <p>{{ comment.text }}</p>
+              <p class="text-sm text-gray-500">Posté par {{ comment.author }} le {{ comment.date }}</p>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Formulaire pour ajouter un commentaire -->
+        <!-- Assurez-vous d'implémenter la logique nécessaire dans votre composant Angular -->
+        <div class="my-6">
+          <h3 class="text-lg font-semibold mb-3">Ajouter un Commentaire</h3>
+          <form (submit)="addComment()">
+            <textarea class="w-full p-2 border border-gray-300 rounded" [(ngModel)]="newComment" name="comment" rows="4" placeholder="Votre commentaire..."></textarea>
+            <button type="submit" class="mt-2 py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600">Envoyer</button>
+          </form>
+        </div>
+      </div>
+  
+      <!-- Template pour le chargement -->
+      
+    </div>
+  </body>

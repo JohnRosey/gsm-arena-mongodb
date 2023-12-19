@@ -1,4 +1,5 @@
 export interface Device {
+_id: any;
     brand : string;
     model : string;
     network_technology  : string;

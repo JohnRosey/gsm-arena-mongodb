@@ -39,7 +39,7 @@
     <div *ngFor="let device of paginatedDevices" class="card w-96 bg-base-100 shadow-xl">
       <figure><img src="{{device.img_url}}" alt="{{device.model}}" /></figure>
       <div class="card-body">
-        <h2 class="card-title">{{device.brand}} - {{device.model}}</h2>
+        <h2 class="card-title" (click)="openDeviceDetails(device._id)">{{device.brand}} - {{device.model}}</h2>
         <p>Network Technology: {{device.network_technology}}</p>
         <p>Announced: {{device.announced}}</p>
         <p>Status: {{device.status}}</p>
