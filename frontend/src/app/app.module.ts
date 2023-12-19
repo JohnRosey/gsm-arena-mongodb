@@ -7,12 +7,18 @@ import { SearchComponent } from './search/search.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DeviceDetailsComponent } from './device-details/device-details.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ProfilComponent } from './profil/profil.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
-    DeviceDetailsComponent
+    DeviceDetailsComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfilComponent
   ],
   imports: [
     BrowserModule,
