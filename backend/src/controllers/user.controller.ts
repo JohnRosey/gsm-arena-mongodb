@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express'
-import { createUser, findUser } from '../models/user.model'
+import { createUser, findUser, findUserById, updateUserData } from '../models/user.model'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
@@ -32,28 +32,32 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const getUserProfile = async (req: Request, res: Response) => {
   try {
-    const user = await findUser(req.params.userId)
-    if (!user) {
+    const id = await findUserById(req.params.userId)
+    if (!id) {
       return res.status(404).json({ message: 'User not found' })
     }
-    res.status(200).json(user)
+    res.status(200).json(id)
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' })
   }
 }
 
 export const updateUserProfile = async (req: Request, res: Response) => {
-  const { email, password } = req.body
+  const userId = req.params.userId; // Assurez-vous d'avoir l'userId dans les paramètres de la requête
+  const userInfo = req.body; // Les informations à mettre à jour
+
   try {
-    const updatedUser = await updateUserProfile(email, password)
+    // Ici, j'utilise 'updateUserData' pour éviter la confusion
+    const updatedUser = await updateUserData(userId, userInfo);
     if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' })
+      return res.status(404).json({ message: 'User not found' });
     }
-    res.status(200).json({ message: 'User updated successfully', user: updatedUser })
+    res.status(200).json({ message: 'User updated successfully', user: updatedUser });
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' })
+    res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
+
 
 // ... autres fonctions existantes ...
 
@@ -79,7 +83,7 @@ export const loginUser = async (req: Request, res: Response) => {
     // Generate JWT token
     const token = jwt.sign({ id: existingUser.id }, JWT_SECRET)
 
-    res.status(200).json({ message: 'User logged in successfully', token })
+    res.status(200).json({ message: 'User logged in successfully', token, userId: existingUser.id })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Internal server error' })

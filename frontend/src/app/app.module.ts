@@ -10,6 +10,8 @@ import { DeviceDetailsComponent } from './device-details/device-details.componen
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfilComponent } from './profil/profil.component';
+import { LogoutComponent } from './logout/logout.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { ProfilComponent } from './profil/profil.component';
     DeviceDetailsComponent,
     LoginComponent,
     RegisterComponent,
-    ProfilComponent
+    ProfilComponent,
+    LogoutComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,7 @@ import { ProfilComponent } from './profil/profil.component';
     FormsModule,
     HttpClientModule ,// Importez le module HttpClientModule
   ],
-  providers: [SearchComponent],
+  providers: [SearchComponent,ProfilComponent,RegisterComponent,LoginComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

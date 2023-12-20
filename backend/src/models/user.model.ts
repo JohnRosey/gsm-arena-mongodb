@@ -9,6 +9,7 @@ const mongoURI = process.env.MONGODB_URI
 let userCollection: Collection
 
 const userSchema = new mongoose.Schema({
+  userId:String,
   username: String,
   email: String,
   password: String,
@@ -28,14 +29,29 @@ export const createUser = async (username: string, password: string, email: stri
 export const findUser = async (username: string) => {
   return await User.findOne({ username })
 }
-
-// update user profile (email, password)
-export const updateUserProfile = async (userId: string, updateData: { email?: string, password?: string }) => {
-  if (updateData.password) {
-    updateData.password = await bcrypt.hash(updateData.password, 10)
-  }
-  return await User.findByIdAndUpdate(userId, updateData, { new: true })
+export const findUserById = async (userId: string) => {
+return await User.findById(userId)
 }
+// update user profile (email, password)
+export const updateUserData = async (userId, updateData) => {
+  try {
+    // Si 'updateData' contient un mot de passe, hachez-le avant de l'enregistrer
+   
+
+    // Mettez à jour l'utilisateur dans la base de données
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      updateData,
+      { new: true } // L'option 'new: true' renvoie l'objet après la mise à jour
+    );
+
+    return updatedUser;
+  } catch (error) {
+    // Gérer les erreurs ici (par exemple, renvoyer une erreur ou null)
+    console.error('Error updating user data:', error);
+    throw error;
+  }
+};
 // get user profile (email, password)
 export const getUserProfile = async (userId: string) => {
   return await User.findById(userId)

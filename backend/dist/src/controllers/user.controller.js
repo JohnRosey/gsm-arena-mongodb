@@ -41,11 +41,11 @@ exports.registerUser = registerUser;
 // ... autres imports et configurations ...
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = yield (0, user_model_1.findUser)(req.params.userId);
-        if (!user) {
+        const id = yield (0, user_model_1.findUserById)(req.params.userId);
+        if (!id) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        res.status(200).json(id);
     }
     catch (error) {
         res.status(500).json({ message: 'Internal server error' });
@@ -53,9 +53,11 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getUserProfile = getUserProfile;
 const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const userId = req.params.userId; // Assurez-vous d'avoir l'userId dans les paramètres de la requête
+    const userInfo = req.body; // Les informations à mettre à jour
     try {
-        const updatedUser = yield (0, exports.updateUserProfile)(email, password);
+        // Ici, j'utilise 'updateUserData' pour éviter la confusion
+        const updatedUser = yield (0, user_model_1.updateUserData)(userId, userInfo);
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -85,7 +87,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Generate JWT token
         const token = jsonwebtoken_1.default.sign({ id: existingUser.id }, JWT_SECRET);
-        res.status(200).json({ message: 'User logged in successfully', token });
+        res.status(200).json({ message: 'User logged in successfully', token, userId: existingUser.id });
     }
     catch (error) {
         console.error(error);
