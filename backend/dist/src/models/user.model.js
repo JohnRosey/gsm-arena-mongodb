@@ -46,9 +46,6 @@ exports.findUserById = findUserById;
 const updateUserData = (userId, updateData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Si 'updateData' contient un mot de passe, hachez-le avant de l'enregistrer
-        if (updateData.password) {
-            updateData.password = yield bcryptjs_1.default.hash(updateData.password, 10);
-        }
         // Mettez à jour l'utilisateur dans la base de données
         const updatedUser = yield User.findByIdAndUpdate(userId, updateData, { new: true } // L'option 'new: true' renvoie l'objet après la mise à jour
         );

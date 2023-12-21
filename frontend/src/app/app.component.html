@@ -32,24 +32,28 @@
 <body>
   <nav class="bg-gray-800 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="font-bold text-xl">
-        MaApp
-      </div>
-      <div class="flex gap-4">
-        <a class="hover:text-gray-300" routerLink="/">Accueil</a>
-        <a class="hover:text-gray-300" routerLink="/search">Recherche</a>
-        <a *ngIf="!(service.isLoggedIn | async)" class="hover:text-gray-300" routerLink="/login">Se connecter</a>
-        <a *ngIf="!(service.isLoggedIn | async)" class="hover:text-gray-300" routerLink="/register">Se créer un compte</a>
-        <div *ngIf="service.isLoggedIn | async" class="dropdown relative">
-          <div tabindex="0" class="btn m-1">Profil</div>
-          <div class="dropdown-content">
-            <a routerLink="/profil">Modifier le Profil</a>
-            <a routerLink="/logout">Se Déconnecter</a>
-          </div>
+        <!-- Titre / Logo -->
+        <a href="#" class="text-xl font-bold">MoumouniMobile</a>
+
+        <!-- Liens de Navigation -->
+        <div class="hidden md:flex space-x-4">
+            <a routerLink="/home" class="text-gray-300 hover:text-gray-100">Home</a>
+            <a *ngIf="!(service.isLoggedIn | async)" routerLink="/login" class="text-gray-300 hover:text-gray-100">Se connecter</a>
+            <a *ngIf="!(service.isLoggedIn | async)" routerLink="/register" class="text-gray-300 hover:text-gray-100">Se créer un compte</a>
+            <div *ngIf="service.isLoggedIn | async" class="dropdown relative">
+                <div tabindex="0" class="btn m-1">Profil</div>
+                <div class="dropdown-content">
+                    <a routerLink="/profil">Modifier le Profil</a>
+                    <a routerLink="/logout">Se Déconnecter</a>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <!-- Bouton Commencer -->
+        <button routerLink="/search" class="btn btn-primary">Commencer</button>
     </div>
-  </nav>
+</nav>
+
 
   <div class="container mx-auto p-4">
     <router-outlet></router-outlet>

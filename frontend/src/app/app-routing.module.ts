@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { ProfilComponent } from './profil/profil.component';
 import { AuthGuard } from './AuthGuard';
 import { LogoutComponent } from './logout/logout.component';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -16,7 +17,8 @@ const routes: Routes = [
     component: ProfilComponent, 
     canActivate: [AuthGuard] // Utilisez votre garde de route ici
   },
-  { path: '', redirectTo: '/search', pathMatch: 'full' },
+  {path:'home',component:HomeComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'profil', component: ProfilComponent },
   { path: 'device-details', component: DeviceDetailsComponent },
   { path: 'search', component: SearchComponent },
